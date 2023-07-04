@@ -1,11 +1,15 @@
 {
-    "name": "symfony/mailer",
+    "name": "ssddanbrown/symfony-mailer",
     "type": "library",
     "description": "Helps sending emails",
     "keywords": [],
     "homepage": "https://symfony.com",
     "license": "MIT",
     "authors": [
+        {
+            "name": "Dan Brown",
+            "homepage": "https://danb.me"
+        },
         {
             "name": "Fabien Potencier",
             "email": "fabien@symfony.com"

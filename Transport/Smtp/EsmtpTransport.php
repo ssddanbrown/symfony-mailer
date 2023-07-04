@@ -29,6 +29,7 @@ class EsmtpTransport extends SmtpTransport
     private array $authenticators = [];
     private string $username = '';
     private string $password = '';
+    private bool $requireTls = false;
 
     public function __construct(string $host = 'localhost', int $port = 0, bool $tls = null, EventDispatcherInterface $dispatcher = null, LoggerInterface $logger = null)
     {
@@ -54,6 +55,8 @@ class EsmtpTransport extends SmtpTransport
         }
         if (!$tls) {
             $stream->disableTls();
+        } else {
+            $this->requireTls = true;
         }
         if (0 === $port) {
             $port = $tls ? 465 : 25;
@@ -93,6 +96,21 @@ class EsmtpTransport extends SmtpTransport
         return $this->password;
     }
 
+    /**
+     * @return $this
+     */
+    public function setTlsRequirement(bool $required): static
+    {
+        $this->requireTls = $required;
+
+        return $this;
+    }
+
+    public function getTlsRequirement(): bool
+    {
+        return $this->requireTls;
+    }
+
     public function addAuthenticator(AuthenticatorInterface $authenticator): void
     {
         $this->authenticators[] = $authenticator;
@@ -106,6 +124,7 @@ class EsmtpTransport extends SmtpTransport
 
         /** @var SocketStream $stream */
         $stream = $this->getStream();
+        $tlsStarted = $stream->isTLS();
         // WARNING: !$stream->isTLS() is right, 100% sure :)
         // if you think that the ! should be removed, read the code again
         // if doing so "fixes" your issue then it probably means your SMTP server behaves incorrectly or is wrongly configured
@@ -116,7 +135,12 @@ class EsmtpTransport extends SmtpTransport
                 throw new TransportException('Unable to connect with STARTTLS.');
             }
 
+            $tlsStarted = true;
             $capabilities = $this->callHeloCommand();
+        }
+
+        if (!$tlsStarted && $this->getTlsRequirement()) {
+            throw new TransportException('TLS is required but neither TLS or STARTTLS is in use.');
         }
 
         if (\array_key_exists('AUTH', $capabilities)) {
