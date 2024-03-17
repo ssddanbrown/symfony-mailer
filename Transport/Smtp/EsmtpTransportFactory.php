@@ -68,6 +68,10 @@ final class EsmtpTransportFactory extends AbstractTransportFactory
             $transport->setPingThreshold((int) $pingThreshold);
         }
 
+        if (null !== ($tlsRequired = $dsn->getOption('tls_required'))) {
+            $transport->setTlsRequirement((bool) $tlsRequired);
+        }
+
         return $transport;
     }
 
