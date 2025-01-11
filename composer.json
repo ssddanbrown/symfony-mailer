@@ -1,11 +1,15 @@
 {
-    "name": "symfony/mailer",
+    "name": "ssddanbrown/symfony-mailer",
     "type": "library",
     "description": "Helps sending emails",
     "keywords": [],
     "homepage": "https://symfony.com",
     "license": "MIT",
     "authors": [
+        {
+            "name": "Dan Brown",
+            "homepage": "https://danb.me"
+        },
         {
             "name": "Fabien Potencier",
             "email": "fabien@symfony.com"
@@ -36,6 +40,9 @@
         "symfony/messenger": "<6.4",
         "symfony/mime": "<6.4",
         "symfony/twig-bridge": "<6.4"
+    },
+    "replace": {
+        "symfony/mailer": "^7.0"
     },
     "autoload": {
         "psr-4": { "Symfony\\Component\\Mailer\\": "" },

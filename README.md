@@ -3,6 +3,10 @@ Mailer Component
 
 The Mailer component helps sending emails.
 
+Note: This is a (hopefully temporary) fork of [symfony/mailer](https://github.com/symfony/mailer) to patch in TLS
+assurance for use in BookStack. It's not advised to use this library fork for other projects.
+It only contains/patches the single branch used by BookStack.
+
 Getting Started
 ---------------
 
